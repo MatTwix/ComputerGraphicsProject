@@ -13,7 +13,7 @@ DEFAULT_OUTPUT_FROMAT = 'TIFF'
 DEFAULT_JPEG_QUALITY = 95
 
 def pil2pixmap(im: Image.Image) -> QtGui.QPixmap:
-    im = im.convert("RGBA")  # всегда RGBA
+    im = im.convert("RGBA")
     data = im.tobytes("raw", "RGBA")
     qimage = QtGui.QImage(data, im.width, im.height, QtGui.QImage.Format_RGBA8888)
     return QtGui.QPixmap.fromImage(qimage)
@@ -94,9 +94,8 @@ def processImageFile(
     borderRGB=(255, 255, 255),
     outFormat=DEFAULT_OUTPUT_FROMAT,
     jpegQuality=DEFAULT_JPEG_QUALITY,
-    orientation='portrait',   # по умолчанию portrait
+    orientation='portrait',
 ):
-    # Целевая ширина/высота с учётом ориентации
     targetW, targetH = a4Pixels(dpi, orientation=orientation.lower())
 
     try:
@@ -119,7 +118,6 @@ def processImageFile(
             if im.mode not in ('RGB', "RGBA"):
                 im = im.convert('RGB')
 
-            # Масштабируем и вставляем в канву под нужную ориентацию
             canvas, usedScale = fitAndPad(im, targetW, targetH, placement=placement, borderRGB=borderRGB)
 
             final = convertToCMYK(canvas)
@@ -192,7 +190,6 @@ class MainWindow(QtWidgets.QWidget):
         self.formatCombo = QtWidgets.QComboBox()
         self.formatCombo.addItems(['TIFF', 'JPEG'])
 
-        # Новый параметр — ориентация
         self.orientationCombo = QtWidgets.QComboBox()
         self.orientationCombo.addItems(['Portrait', 'Landscape'])
 
@@ -217,7 +214,7 @@ class MainWindow(QtWidgets.QWidget):
         self.outDir = None
         self.borderRGB = (255, 255, 255)
 
-        # Подключаем автообновление предпросмотра
+        # preview autoupdate
         self.placementCombo.currentIndexChanged.connect(self.show_preview)
         self.thresholdSpin.valueChanged.connect(self.show_preview)
         self.formatCombo.currentIndexChanged.connect(self.show_preview)
@@ -238,7 +235,7 @@ class MainWindow(QtWidgets.QWidget):
         if c.isValid():
             self.borderRGB = (c.red(), c.green(), c.blue())
             self.borderColorBtn.setStyleSheet(f"background-color: {c.name()};")
-            self.show_preview()  # обновляем превью сразу после выбора цвета
+            self.show_preview()
 
     def show_preview(self):
         sel = self.lst.selectedItems()
@@ -248,7 +245,6 @@ class MainWindow(QtWidgets.QWidget):
         p = self.inDir / name
         try:
             with Image.open(p) as im:
-                # применяем ориентацию
                 if self.orientationCombo.currentText() == "Landscape":
                     im = im.rotate(90, expand=True)
 
