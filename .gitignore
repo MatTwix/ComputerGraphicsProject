@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pycache/
+*.env
+*.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Byte-compiled / optimized / DLL files
+*.so
+*.dylib
+*.dll
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+*.whl
+
+# VS Code
+.vscode/
+
+# MacOS
+.DS_Store
+*.DS_Store
+
+# Logs
+*.log
+
+# Thumbnails, previews
+*.thumb
+*.preview
+
+# Output files
+output/
+*.tiff
+*.jpg
+*.jpeg
+*.png
+report.csv
