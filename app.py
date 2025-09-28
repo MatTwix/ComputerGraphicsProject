@@ -37,6 +37,9 @@ border_color = st.color_picker("Цвет полей", "#FFFFFF")
 borderRGB = tuple(int(border_color.lstrip("#")[i : i + 2], 16) for i in (0, 2, 4))
 
 out_dir = Path("output")
+if out_dir.exists():
+    import shutil
+    shutil.rmtree(out_dir)
 out_dir.mkdir(exist_ok=True)
 
 if st.button("🚀 Запустить обработку") and uploaded_files:
